@@ -48,12 +48,12 @@ export class DOMController {
 
             if (this.cpu.gameboard.allSunk()) {
               this.winnerContainer.textContent = "Player wins!";
-              this.updatePlayerBoard(this.cpu);
+              this.finishGame();
             }
 
             setTimeout(() => {
               this.cpuTurn();
-            }, 500);
+            }, 200);
           });
         }
 
@@ -69,24 +69,41 @@ export class DOMController {
   }
 
   cpuTurn() {
-    let coordX = this.getRandomInt(0, 10);
-    let coordY = this.getRandomInt(0, 10);
-    let button = this.player.boardContainer.querySelector(
-      `[data-x="${coordX}"][data-y="${coordY}"]`,
-    );
+    while (true) {
+      let coordX = this.getRandomInt(0, 10);
+      let coordY = this.getRandomInt(0, 10);
 
-    if (this.player.gameboard.receiveAttack(coordX, coordY)) {
-      button.classList = "hit";
-    } else {
-      button.classList = "miss";
-    }
+      if (
+        !this.player.gameboard.attacks.some(
+          ([x, y]) => x === coordX && y === coordY,
+        )
+      ) {
+        let button = this.player.boardContainer.querySelector(
+          `[data-x="${coordX}"][data-y="${coordY}"]`,
+        );
 
-    if (this.player.gameboard.allSunk()) {
-      this.winnerContainer.textContent = "CPU wins!";
-      this.updatePlayerBoard(this.cpu);
+        if (this.player.gameboard.receiveAttack(coordX, coordY)) {
+          button.classList = "hit";
+        } else {
+          button.classList = "miss";
+        }
+
+        if (this.player.gameboard.allSunk()) {
+          this.winnerContainer.textContent = "CPU wins!";
+          this.finishGame();
+        }
+        break;
+      }
     }
   }
 
+  finishGame() {
+    this.updatePlayerBoard(this.cpu);
+    let allButtons = this.radar.querySelectorAll("button");
+    allButtons.forEach((element) => {
+      element.disabled = true;
+    });
+  }
   updatePlayerBoard(player) {
     const shipSymbols = ["O", "*", ">", "<", "-"];
 

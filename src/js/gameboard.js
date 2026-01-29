@@ -2,7 +2,7 @@ import { Ship } from "./ship";
 
 export class Gameboard {
   constructor() {
-    this.missedHits = [];
+    this.attacks = [];
 
     this.locations = [
       {
@@ -39,6 +39,7 @@ export class Gameboard {
   }
 
   receiveAttack(x, y) {
+    this.attacks.push([x, y]);
     for (let i = 0; i < this.locations.length; i++) {
       const shipLocation = this.locations[i];
       let minX = shipLocation.x;
@@ -56,8 +57,6 @@ export class Gameboard {
       if (minX <= x && x <= maxX && minY <= y && y <= maxY) {
         shipLocation.ship.hit();
         return true;
-      } else {
-        this.missedHits.push({ x: x, y: y });
       }
     }
     return false;

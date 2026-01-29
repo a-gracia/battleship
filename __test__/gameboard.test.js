@@ -10,7 +10,7 @@ it("Receive attack: miss", () => {
   let gameboard = new Gameboard();
 
   expect(gameboard.receiveAttack(6, 6)).toBeFalsy();
-  expect(gameboard.missedHits[0]).toStrictEqual({ x: 6, y: 6 });
+  expect(gameboard.attacks[0]).toStrictEqual({ x: 6, y: 6 });
 });
 
 it("All ships sunk: false", () => {
