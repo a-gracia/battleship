@@ -1,3 +1,22 @@
-* {
-  background-color: aquamarine;
+#radar,
+#my-board {
+  display: grid;
+  grid-template-columns: repeat(10, 30px);
+  grid-template-rows: repeat(10, 30px);
+}
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: rgb(95, 165, 255);
+}
+
+button {
+  font-weight: bolder;
+}
+
+button:disabled {
+  color: #000;
 }

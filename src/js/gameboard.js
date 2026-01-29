@@ -38,22 +38,19 @@ export class Gameboard {
     ];
   }
 
-  getShips() {
-    return this.locations;
-  }
-
   receiveAttack(x, y) {
     for (let i = 0; i < this.locations.length; i++) {
       const shipLocation = this.locations[i];
       let minX = shipLocation.x;
       let minY = shipLocation.y;
       let maxX, maxY;
+
       if (shipLocation.horizontal) {
-        maxX = minX + shipLocation.ship.length;
+        maxX = minX + shipLocation.ship.length - 1;
         maxY = minY;
       } else {
         maxX = minX;
-        maxY = minY + shipLocation.ship.length;
+        maxY = minY + shipLocation.ship.length - 1;
       }
 
       if (minX <= x && x <= maxX && minY <= y && y <= maxY) {
