@@ -9,17 +9,19 @@ export class DOMController {
     this.radar = document.querySelector("#radar");
     this.myBoard = document.querySelector("#my-board");
     this.winnerContainer = document.querySelector("#winner-container");
+    this.start();
+  }
 
+  start() {
     this.player = new Player(false, this.myBoard);
     this.cpu = new Player(true, this.radar);
-    this.currentPlayer = this.player;
 
     // Populate both boards
     this.populateBoard(this.player);
     this.populateBoard(this.cpu);
 
     // Add current locartions to player's board
-    this.updatePlayerBoard(this.player);
+    this.displayLocations(this.player);
   }
 
   populateBoard(player) {
@@ -98,13 +100,13 @@ export class DOMController {
   }
 
   finishGame() {
-    this.updatePlayerBoard(this.cpu);
+    this.displayLocations(this.cpu);
     let allButtons = this.radar.querySelectorAll("button");
     allButtons.forEach((element) => {
       element.disabled = true;
     });
   }
-  updatePlayerBoard(player) {
+  displayLocations(player) {
     const shipSymbols = ["O", "*", ">", "<", "-"];
 
     player.gameboard.locations.forEach((location, index) => {
