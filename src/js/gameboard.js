@@ -20,10 +20,11 @@ export class Gameboard {
     shipSizes.forEach((size) => {
       let horizontal = Math.random() > 0.5;
       let minX = 0;
-      let maxX = horizontal ? 10 - size : 9;
+      let maxX = horizontal ? 10 - size : 10;
 
       let minY = 0;
-      let maxY = horizontal ? 9 : 10 - size;
+      let maxY = horizontal ? 10 : 10 - size;
+
       while (true) {
         let coordX = getRandomInt(minX, maxX);
         let coordY = getRandomInt(minY, maxY);
