@@ -1,41 +1,63 @@
 import { Ship } from "./ship";
+import { getRandomInt } from "./utils";
 
 export class Gameboard {
-  constructor() {
+  constructor(locations) {
     this.attacks = [];
 
-    this.locations = [
-      {
-        x: 0,
-        y: 0,
-        horizontal: true,
-        ship: new Ship(5),
-      },
-      {
-        x: 0,
-        y: 1,
-        horizontal: true,
-        ship: new Ship(4),
-      },
-      {
-        x: 0,
-        y: 2,
-        horizontal: true,
-        ship: new Ship(3),
-      },
-      {
-        x: 0,
-        y: 3,
-        horizontal: true,
-        ship: new Ship(3),
-      },
-      {
-        x: 0,
-        y: 4,
-        horizontal: false,
-        ship: new Ship(2),
-      },
-    ];
+    if (locations) {
+      this.locations = locations;
+    } else {
+      this.locations = this.randomLocations();
+    }
+  }
+
+  randomLocations() {
+    let shipSizes = [2, 3, 3, 4, 5];
+    let locations = [];
+    let usedCoordinates = [];
+
+    shipSizes.forEach((size) => {
+      let horizontal = Math.random() > 0.5;
+      let minX = 0;
+      let maxX = horizontal ? 10 - size : 9;
+
+      let minY = 0;
+      let maxY = horizontal ? 9 : 10 - size;
+      while (true) {
+        let coordX = getRandomInt(minX, maxX);
+        let coordY = getRandomInt(minY, maxY);
+
+        let shipCoordinates = [];
+
+        for (let i = 0; i < size; i++) {
+          if (horizontal) {
+            shipCoordinates.push([coordX + i, coordY]);
+          } else {
+            shipCoordinates.push([coordX, coordY + i]);
+          }
+        }
+
+        const exists = shipCoordinates.some(([a, b]) =>
+          usedCoordinates.some(([c, d]) => a === c && b === d),
+        );
+
+        if (!exists) {
+          usedCoordinates = usedCoordinates.concat(shipCoordinates);
+
+          locations.push({
+            x: coordX,
+            y: coordY,
+            horizontal: horizontal,
+            ship: new Ship(size),
+          });
+
+          break;
+        }
+      }
+    });
+
+    return locations;
   }
 
   receiveAttack(x, y) {

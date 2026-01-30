@@ -1,6 +1,4 @@
-import { Gameboard } from "./gameboard";
 import { Player } from "./player";
-import { Ship } from "./ship";
 
 const BOARD_SIZE = 10;
 
@@ -28,8 +26,8 @@ export class DOMController {
     for (let y = BOARD_SIZE - 1; y >= 0; y--) {
       for (let x = 0; x < BOARD_SIZE; x++) {
         let button = document.createElement("button");
-        button.setAttribute("data-x", x);
-        button.setAttribute("data-y", y);
+        button.dataset.x = x;
+        button.dataset.y = y;
 
         if (player == this.player) {
           button.disabled = true;
@@ -51,11 +49,11 @@ export class DOMController {
             if (this.cpu.gameboard.allSunk()) {
               this.winnerContainer.textContent = "Player wins!";
               this.finishGame();
+            } else {
+              setTimeout(() => {
+                this.cpuTurn();
+              }, 200);
             }
-
-            setTimeout(() => {
-              this.cpuTurn();
-            }, 200);
           });
         }
 
