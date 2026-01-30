@@ -1,5 +1,5 @@
 import { Player } from "./player";
-
+import { getRandomInt } from "./utils";
 const BOARD_SIZE = 10;
 
 export class DOMController {
@@ -72,16 +72,10 @@ export class DOMController {
     }
   }
 
-  getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-
   cpuTurn() {
     while (true) {
-      let coordX = this.getRandomInt(0, 10);
-      let coordY = this.getRandomInt(0, 10);
+      let coordX = getRandomInt(0, 10);
+      let coordY = getRandomInt(0, 10);
 
       if (
         !this.player.gameboard.attacks.some(
@@ -94,6 +88,7 @@ export class DOMController {
 
         if (this.player.gameboard.receiveAttack(coordX, coordY)) {
           button.classList = "hit";
+          button.textContent = "X";
         } else {
           button.classList = "miss";
         }
@@ -115,9 +110,7 @@ export class DOMController {
     });
   }
   displayLocations(player) {
-    const shipSymbols = ["-", "<", ">", "*", "+"];
-
-    player.gameboard.locations.forEach((location, index) => {
+    player.gameboard.locations.forEach((location) => {
       for (let i = 0; i < location.ship.length; i++) {
         let coordX = location.x;
         let coordY = location.y;
@@ -129,8 +122,17 @@ export class DOMController {
         let attributes = `[data-x="${coordX}"][data-y="${coordY}"]`;
 
         let button = player.boardContainer.querySelector(attributes);
+        if (i == 0) {
+          button.textContent = "<";
+        } else if (i == location.ship.length - 1) {
+          button.textContent = ">";
+        } else {
+          button.textContent = "=";
+        }
 
-        button.textContent = shipSymbols[index];
+        if (!location.horizontal) {
+          button.classList.add("rotate");
+        }
       }
     });
   }
