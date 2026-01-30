@@ -7,10 +7,19 @@ export class DOMController {
     this.radar = document.querySelector("#radar");
     this.myBoard = document.querySelector("#my-board");
     this.winnerContainer = document.querySelector("#winner-container");
+    this.restartButton = document.querySelector("#restart-button");
+    this.restartButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.start();
+    });
     this.start();
   }
 
   start() {
+    this.radar.replaceChildren();
+    this.myBoard.replaceChildren();
+    this.winnerContainer.textContent = "";
+
     this.player = new Player(false, this.myBoard);
     this.cpu = new Player(true, this.radar);
 
@@ -26,6 +35,7 @@ export class DOMController {
     for (let y = BOARD_SIZE - 1; y >= 0; y--) {
       for (let x = 0; x < BOARD_SIZE; x++) {
         let button = document.createElement("button");
+        button.classList = "clear";
         button.dataset.x = x;
         button.dataset.y = y;
 
@@ -47,12 +57,12 @@ export class DOMController {
             }
 
             if (this.cpu.gameboard.allSunk()) {
-              this.winnerContainer.textContent = "Player wins!";
+              this.winnerContainer.textContent = "You won!";
               this.finishGame();
             } else {
               setTimeout(() => {
                 this.cpuTurn();
-              }, 200);
+              }, 100);
             }
           });
         }
@@ -89,7 +99,7 @@ export class DOMController {
         }
 
         if (this.player.gameboard.allSunk()) {
-          this.winnerContainer.textContent = "CPU wins!";
+          this.winnerContainer.textContent = "You lost!";
           this.finishGame();
         }
         break;
@@ -105,7 +115,7 @@ export class DOMController {
     });
   }
   displayLocations(player) {
-    const shipSymbols = ["O", "*", ">", "<", "-"];
+    const shipSymbols = ["-", "<", ">", "*", "+"];
 
     player.gameboard.locations.forEach((location, index) => {
       for (let i = 0; i < location.ship.length; i++) {

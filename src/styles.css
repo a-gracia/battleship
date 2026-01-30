@@ -1,22 +1,84 @@
+* {
+  font-family: "Courier New", Courier, monospace;
+  color: rgb(30, 255, 0);
+}
+
+body {
+  background-color: rgb(46, 46, 46);
+  margin: 0;
+  padding: 0;
+}
+
 #radar,
 #my-board {
   display: grid;
-  grid-template-columns: repeat(10, 30px);
-  grid-template-rows: repeat(10, 30px);
+  grid-template-columns: repeat(10, 40px);
+  grid-template-rows: repeat(10, 40px);
+  gap: 1px;
+}
+
+#radar button,
+#my-board button {
+  font-size: larger;
+  font-weight: bolder;
+  border: 1px solid rgb(21, 184, 0);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#radar button:hover,
+#my-board button:hover {
+  opacity: 0.7;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: space-around;
+  padding: 16px;
+}
+
+@media (max-width: 500px) {
+  #game-container {
+    flex-direction: column;
+  }
+}
+
+.board-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.clear {
+  background-color: black;
 }
 
 .hit {
-  background-color: red;
+  background-color: rgb(255, 0, 0);
 }
 
 .miss {
-  background-color: rgb(95, 165, 255);
+  background-color: rgb(30, 255, 0);
 }
 
-button {
-  font-weight: bolder;
+#restart-button {
+  padding: 8px 16px;
+  background-color: black;
+  border: 1px solid rgb(21, 184, 0);
+  color: rgb(30, 255, 0);
+  font-size: x-large;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-button:disabled {
-  color: #000;
+#restart-button:hover {
+  background-color: rgb(21, 184, 0);
+  color: black;
+}
+
+#top-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
